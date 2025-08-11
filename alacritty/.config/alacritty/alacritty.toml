@@ -1,0 +1,59 @@
+[font]
+size = 12.0
+
+[font.normal]
+family = "JetBrainsMono Nerd Font"
+
+[window]
+decorations = "Full"
+
+[colors.primary]
+background = "#121a21"         
+foreground = "#e5e1d0"         
+
+[colors.normal]
+black   = "#000000"
+red     = "#eb5a4b"
+green   = "#c6d273"
+yellow  = "#e7ce6b"
+blue    = "#62b0dc"
+magenta = "#e68d8d"
+cyan    = "#b2e7d5"
+white   = "#fefefe"
+
+[colors.bright]
+black   = "#414141"
+red     = "#ee847c"
+green   = "#e0f16d"
+yellow  = "#fdf699"
+blue    = "#90dafb"
+magenta = "#f3b7b9"
+cyan    = "#b2e7d5"
+white   = "#fefefe"
+
+[[keyboard.bindings]]
+key = "Back"
+mods = "Command"
+chars = "\u0015"  # This is Ctrl+U
+
+[[keyboard.bindings]]
+key = "Left"
+mods = "Alt"
+chars = "\u001bb"   # ESC + b
+
+# Move forward one word (Option + →)
+[[keyboard.bindings]]
+key = "Right"
+mods = "Alt"
+chars = "\u001bf"   # ESC + f
+# Move to beginning of line (Cmd + ←)
+[[keyboard.bindings]]
+key = "Left"
+mods = "Command"
+chars = "\u0001"       # Ctrl+A
+
+# Move to end of line (Cmd + →)
+[[keyboard.bindings]]
+key = "Right"
+mods = "Command"
+chars = "\u0005"       # Ctrl+E

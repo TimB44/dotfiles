@@ -1,0 +1,23 @@
+[user]
+	name = TimB44
+	email = tblamires22@gmail.com
+[init]
+	defaultBranch = main
+[color]
+	ui = auto
+[core]
+	excludesfile = /Users/timothyblamires/.gitignore_global
+	editor = nvim 
+	autocrlf = input
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[alias]
+	lol = log --graph --decorate --pretty=oneline --abbrev-commit
+	lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+	s = status
+	d = diff
+	dc = diff --cached
+  co = checkout
