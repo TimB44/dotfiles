@@ -21,3 +21,5 @@
 	d = diff
 	dc = diff --cached
   co = checkout
+[push]
+	default = current
