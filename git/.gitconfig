@@ -6,8 +6,9 @@
 [color]
 	ui = auto
 [core]
+	pager = delta
 	excludesfile = /Users/timothyblamires/.gitignore_global
-	editor = nvim 
+	editor = nvim
 	autocrlf = input
 [filter "lfs"]
 	clean = git-lfs clean -- %f
@@ -21,5 +22,15 @@
 	d = diff
 	dc = diff --cached
   co = checkout
+  fpush = push --force-with-lease --atomic
+  qamend = commit --amend --no-edit
 [push]
 	default = current
+[interactive]
+    diffFilter = delta --color-only
+[delta]
+    navigate = true
+    line-numbers = true
+    hyperlinks = true
+[merge]
+    conflictStyle = zdiff3
