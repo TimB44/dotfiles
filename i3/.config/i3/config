@@ -42,6 +42,9 @@ exec --no-startup-id autorandr --change
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex --autostart --environment i3
 
+# Start gnome-keyring with SSH support
+exec --no-startup-id gnome-keyring-daemon --start --components=ssh,secrets,pkcs11
+
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
 
@@ -68,10 +71,16 @@ floating_modifier $mod
 tiling_drag modifier titlebar
 
 # start a terminal (Alacritty with tmux)
-bindsym $mod+Return exec alacritty --config-file ~/.config/alacritty/alacritty_linux.toml -e tmux
+bindsym $mod+Return exec alacritty -e tmux
+
+# Show notification history
+bindsym $mod+n exec ~/.local/bin/dunst-history.sh
 
 # Toggle VPN connection
-bindsym $mod+v exec ~/.local/bin/vpn-toggle.sh
+bindsym $mod+Shift+n exec ~/.local/bin/vpn-toggle.sh
+
+# Open Chrome
+bindsym $mod+b exec google-chrome
 
 # kill focused window
 bindsym $mod+Shift+q kill
