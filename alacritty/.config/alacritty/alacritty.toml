@@ -64,3 +64,14 @@ chars = "\u0001"       # Ctrl+A
 key = "Right"
 mods = "Command"
 chars = "\u0005"       # Ctrl+E
+
+# Linux-specific keybindings
+[[keyboard.bindings]]
+key = "C"
+mods = "Alt"
+action = "Copy"
+
+[[keyboard.bindings]]
+key = "V"
+mods = "Alt"
+action = "Paste"
