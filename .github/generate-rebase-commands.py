@@ -61,9 +61,10 @@ def main(triggered_branch: str) -> None:
                 f'[ -z "$OLD_BASE" ] && echo "Error: {branch} needs merge commit" && exit 1'
             )
 
-            # Create new merge base from local branches
-            print(f"git checkout -b temp-new-base {parents[0]}")
-            merge_targets = " ".join(parents[1:])
+            # Create new merge base (use origin/ for branches not rebased in this run)
+            parent_refs = [p if p in branches_set else f"origin/{p}" for p in parents]
+            print(f"git checkout -b temp-new-base {parent_refs[0]}")
+            merge_targets = " ".join(parent_refs[1:])
             print(
                 f"git merge --no-ff -m 'New merge base' {merge_targets} || (echo 'Merge conflict' && exit 1)"
             )
