@@ -68,7 +68,7 @@ floating_modifier $mod
 tiling_drag modifier titlebar
 
 # start a terminal (Alacritty with tmux)
-bindsym $mod+Return exec alacritty -e tmux
+bindsym $mod+Return exec alacritty --config-file ~/.config/alacritty/alacritty_linux.toml -e tmux
 
 # Toggle VPN connection
 bindsym $mod+v exec ~/.local/bin/vpn-toggle.sh
