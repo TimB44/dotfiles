@@ -68,7 +68,8 @@ def main(triggered_branch: str) -> None:
                 f"git merge --no-ff -m 'New merge base' {merge_targets} || (echo 'Merge conflict' && exit 1)"
             )
 
-            # Rebase
+            # Checkout back to original branch and rebase
+            print(f"git checkout {branch}")
             print(
                 f"git rebase --onto temp-new-base $OLD_BASE || (git rebase --abort && exit 1)"
             )
