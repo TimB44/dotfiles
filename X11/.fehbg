@@ -1,0 +1,2 @@
+#!/bin/sh
+feh --no-fehbg --bg-scale '/home/tblamires/.local/share/backgrounds/2025-05-29-12-22-00-black-damascus-5k-p0-3840x2160.jpg' 

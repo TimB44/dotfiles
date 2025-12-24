@@ -1,0 +1,22 @@
+# i3blocks configuration
+
+separator_block_width=15
+markup=none
+
+[vpn]
+command=~/.config/i3blocks/scripts/vpn-status.sh
+interval=5
+signal=10
+markup=pango
+
+[disk]
+command=df -h / | awk 'NR==2 {print "Disk: "$4}'
+interval=30
+
+[memory]
+command=free -h | awk 'NR==2 {print "RAM: "$3}'
+interval=10
+
+[time]
+command=date '+%Y-%m-%d %H:%M'
+interval=60
