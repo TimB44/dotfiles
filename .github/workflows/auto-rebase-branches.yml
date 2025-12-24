@@ -1,0 +1,37 @@
+name: Auto Rebase Stacked Branches
+
+on:
+  push:
+  workflow_dispatch:
+
+concurrency:
+  group: rebase-stacked-branches
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  rebase-branches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          AUTHOR_NAME=$(git log -1 --pretty=format:'%an')
+          AUTHOR_EMAIL=$(git log -1 --pretty=format:'%ae')
+          git config user.name "$AUTHOR_NAME"
+          git config user.email "$AUTHOR_EMAIL"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Rebase stacked branches
+        run: |
+          set -eo pipefail
+          .github/generate-rebase-commands.py "${{ github.ref_name }}" | bash
