@@ -1,6 +1,6 @@
 [user]
-	name = TimB44
-	email = tblamires22@gmail.com
+	name = Timothy Blamires
+	email = tblamires@lucidchart.com
 [init]
 	defaultBranch = main
 [color]
@@ -22,8 +22,11 @@
 	d = diff
 	dc = diff --cached
   co = checkout
+  as = !git fetch origin master && git rebase origin/master -i --autosquash
   fpush = push --force-with-lease --atomic
   qamend = commit --amend --no-edit
+  fr = !git fetch origin master && git rebase origin/master
+  nb = "!f() { git fetch origin master && git checkout -b \"$1\" origin/master; }; f"
 [push]
 	default = current
 [interactive]
