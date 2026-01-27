@@ -3,7 +3,7 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        github_actions_ls = {
+        gh_actions_ls = {
           filetypes = { "yaml", "yaml.github" },
           root_dir = function(fname)
             local lspconfig_util = require("lspconfig.util")
