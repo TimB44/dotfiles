@@ -1,16 +1,13 @@
 return {
   {
-    "neovim/nvim-lspconfig",
+    'pmizio/typescript-tools.nvim',
+    dependencies = {'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig'},
     opts = {
-      servers = {
-        ts_ls = {
-          init_options = {
-            tsserver = {
-              path = "/var/lucid/main/cake/node_modules/typescript/lib/",
-            },
-            maxTsServerMemory = 10000,
-          },
-        },
+      settings = {
+        tsserver_path = '/var/lucid/main/node_modules/typescript/lib/tsserver.js',
+        tsserver_max_memory = 100000,
+        separate_diagnostic_server = true,
+        publish_diagnostic_on = "insert_leave",
       },
     },
   },
