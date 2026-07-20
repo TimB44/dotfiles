@@ -9,3 +9,4 @@ brew "fd"
 
 cask "alacritty"
 cask "font-jetbrains-mono-nerd-font"
+cask "karabiner-elements"
