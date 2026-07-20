@@ -17,6 +17,7 @@ BRANCH_DAG: dict[str, list[str]] = {
     "macos": ["main"],
     "work": ["main"],
     "linux-work": ["linux", "work"],
+    "macos-work": ["macos", "work"],
 }
 
 
