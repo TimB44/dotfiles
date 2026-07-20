@@ -1,0 +1,11 @@
+brew "stow"
+brew "fish"
+brew "neovim"
+brew "tmux"
+brew "git-delta"
+brew "fzf"
+brew "ripgrep"
+brew "fd"
+
+cask "alacritty"
+cask "font-jetbrains-mono-nerd-font"
