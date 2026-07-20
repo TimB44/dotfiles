@@ -14,8 +14,9 @@ import networkx as nx
 # Branch DAG Configuration
 BRANCH_DAG: dict[str, list[str]] = {
     "linux": ["main"],
-    "work-common": ["main"],
-    "work": ["linux", "work-common"],
+    "macos": ["main"],
+    "work": ["main"],
+    "linux-work": ["linux", "work"],
 }
 
 
