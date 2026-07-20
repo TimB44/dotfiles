@@ -8,7 +8,7 @@ TERM = "xterm-256color"
 family = "JetBrainsMono Nerd Font"
 
 [terminal.shell]
-program = "tmux"
+program = "/opt/homebrew/bin/tmux"
 args = ["new-session", "-A", "-s", "main"]
 
 [window]
@@ -39,6 +39,11 @@ cyan    = "#b2e7d5"
 white   = "#fefefe"
 
 [[keyboard.bindings]]
+key = "Back"
+mods = "Command"
+chars = "\u0015"  # This is Ctrl+U
+
+[[keyboard.bindings]]
 key = "Left"
 mods = "Alt"
 chars = "\u001bb"   # ESC + b
@@ -48,3 +53,15 @@ chars = "\u001bb"   # ESC + b
 key = "Right"
 mods = "Alt"
 chars = "\u001bf"   # ESC + f
+
+# Move to beginning of line (Cmd + ←)
+[[keyboard.bindings]]
+key = "Left"
+mods = "Command"
+chars = "\u0001"       # Ctrl+A
+
+# Move to end of line (Cmd + →)
+[[keyboard.bindings]]
+key = "Right"
+mods = "Command"
+chars = "\u0005"       # Ctrl+E
