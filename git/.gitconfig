@@ -28,6 +28,7 @@
   rss = restore --staged
   qamend = commit --amend --no-edit
   fr = !git fetch origin main && git rebase origin/main
+  frs = !git fetch origin main-stable && git rebase origin/main-stable
   nb = "!f() { git fetch origin main && git checkout -b \"$1\" origin/main; }; f"
 [push]
 	default = current
@@ -39,3 +40,7 @@
     hyperlinks = true
 [merge]
     conflictStyle = zdiff3
+[scalar]
+	repo = /home/tblamires/lucid/main
+[maintenance]
+	repo = /home/tblamires/lucid/main

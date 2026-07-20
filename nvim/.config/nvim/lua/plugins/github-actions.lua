@@ -5,10 +5,15 @@ return {
       servers = {
         gh_actions_ls = {
           filetypes = { "yaml", "yaml.github" },
-          root_dir = function(fname)
-            local lspconfig_util = require("lspconfig.util")
-            -- Only activate if the file is within a .github directory
-            return fname:match("%.github/") and lspconfig_util.find_git_ancestor(fname)
+          root_dir = function(bufnr, on_dir)
+            local fname = vim.api.nvim_buf_get_name(bufnr)
+            if not (fname:match("%.github/") or fname:match("workflows/")) then
+              return
+            end
+            local git_root = vim.fs.root(bufnr, ".git")
+            if git_root then
+              on_dir(git_root)
+            end
           end,
         },
       },
