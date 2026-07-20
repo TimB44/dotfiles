@@ -1,0 +1,2 @@
+#!/usr/bin/env fish
+echo -n (git rev-parse HEAD) | copy

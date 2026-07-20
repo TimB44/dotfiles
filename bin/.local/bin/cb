@@ -1,0 +1,2 @@
+#!/usr/bin/env fish
+echo -n (git branch --show-current) | copy
