@@ -9,7 +9,7 @@ family = "JetBrainsMono Nerd Font"
 
 [terminal.shell]
 program = "tmux"
-args = ["new-session", "-A", "-D"]
+args = ["new-session", "-A", "-s", "main"]
 
 [window]
 decorations = "Full"
