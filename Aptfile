@@ -1,6 +1,7 @@
 stow
 fish
 tmux
+git-delta
 fzf
 ripgrep
 fd-find
