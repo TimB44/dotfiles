@@ -1,0 +1,10 @@
+# stow tree-folds ~/.local/bin into this directory, so anything installed into
+# ~/.local/bin (uv, uvx, `uv tool install` shims like devbox-*, etc.) lands
+# here and would otherwise show up as dirty. Blanket-ignore everything and only
+# track the hand-maintained scripts below.
+*
+!.gitignore
+!cb
+!cs
+!oc
+!qm
