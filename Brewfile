@@ -1,6 +1,7 @@
 brew "stow"
 brew "fish"
 brew "neovim"
+brew "node"
 brew "tmux"
 brew "git-delta"
 brew "fzf"
