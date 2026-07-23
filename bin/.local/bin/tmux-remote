@@ -4,7 +4,58 @@
 # the local client. Clear it before attaching to either tmux server.
 unset TMUX
 
-/opt/homebrew/bin/mosh devbox -- tmux new-session -A -s main
+control_socket="${TMPDIR:-/tmp}/devbox-agent-ssh-${USER}.sock"
+remote_agent_socket="/home/tblamires/.ssh/mac-agent.sock"
+tunnel_pid=
+
+stop_agent_tunnel() {
+    if [ -n "$tunnel_pid" ]; then
+        kill "$tunnel_pid" 2>/dev/null || true
+        /usr/bin/ssh -S "$control_socket" -O exit devbox >/dev/null 2>&1 || true
+        wait "$tunnel_pid" 2>/dev/null || true
+        tunnel_pid=
+    fi
+}
+
+run_agent_tunnel() {
+    while true; do
+        /usr/bin/ssh \
+            -MNT \
+            -S "$control_socket" \
+            -o ConnectTimeout=5 \
+            -o ConnectionAttempts=1 \
+            -o ServerAliveInterval=5 \
+            -o ServerAliveCountMax=2 \
+            -o ExitOnForwardFailure=yes \
+            -o StreamLocalBindUnlink=yes \
+            -R "${remote_agent_socket}:${SSH_AUTH_SOCK}" \
+            devbox
+        sleep 1
+    done
+}
+
+trap stop_agent_tunnel EXIT HUP INT TERM
+
+run_agent_tunnel >/dev/null 2>&1 &
+tunnel_pid=$!
+
+# Wait for the master so Mosh can reuse it for its SSH bootstrap.
+attempt=0
+while ! /usr/bin/ssh -S "$control_socket" -O check devbox >/dev/null 2>&1; do
+    attempt=$((attempt + 1))
+    if [ "$attempt" -ge 100 ]; then
+        echo "Failed to establish the devbox agent tunnel"
+        exit 1
+    fi
+    sleep 0.1
+done
+
+/opt/homebrew/bin/mosh \
+    --ssh="/usr/bin/ssh -S $control_socket -o ControlMaster=auto" \
+    devbox \
+    -- tmux new-session -A -s main
+
+stop_agent_tunnel
 
 # Returning from Mosh (for example, after detaching remote tmux) switches this
 # terminal back to the persistent local tmux session.
