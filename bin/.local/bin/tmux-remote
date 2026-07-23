@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# detach-client -E leaves TMUX set even though this process is no longer inside
+# the local client. Clear it before attaching to either tmux server.
+unset TMUX
+
+/opt/homebrew/bin/mosh devbox -- tmux new-session -A -s main
+
+# Returning from Mosh (for example, after detaching remote tmux) switches this
+# terminal back to the persistent local tmux session.
+exec /opt/homebrew/bin/tmux new-session -A -s main
