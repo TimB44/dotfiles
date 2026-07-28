@@ -10,6 +10,16 @@ browser_socket="/tmp/devbox-agent-ssh-${USER}-browser.sock"
 tunnel_pid=
 browser_listener_pid=
 
+remove_stale_browser_socket() {
+    /usr/bin/ssh \
+        -o ControlMaster=no \
+        -o ControlPath=none \
+        -o ConnectTimeout=5 \
+        -o ConnectionAttempts=1 \
+        devbox \
+        "/usr/bin/rm -f -- '$browser_socket'"
+}
+
 stop_remote_connection() {
     if [ -n "$tunnel_pid" ]; then
         kill "$tunnel_pid" 2>/dev/null || true
@@ -26,6 +36,12 @@ stop_remote_connection() {
 
 run_agent_tunnel() {
     while true; do
+        # sshd leaves remote Unix-socket paths behind after disconnecting. Remove
+        # the stale browser path before rebinding it on this new master.
+        if ! remove_stale_browser_socket; then
+            sleep 1
+            continue
+        fi
         /usr/bin/ssh \
             -MNT \
             -S "$control_socket" \
