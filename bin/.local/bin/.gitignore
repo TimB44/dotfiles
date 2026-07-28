@@ -6,6 +6,7 @@
 !.gitignore
 !cb
 !cs
+!devbox-browser-listener
 !oc
 !qm
 !tmux-remote

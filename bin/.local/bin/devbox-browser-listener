@@ -1,0 +1,26 @@
+#!/bin/sh
+set -eu
+
+if [ "$#" -ne 2 ]; then
+    echo "Usage: devbox-browser-listener <ssh-control-socket> <ssh-target>" >&2
+    exit 2
+fi
+
+devbox_executable=$(command -v devbox)
+devbox_python=$(sed -n '1s/^#!//p' "$devbox_executable")
+
+exec "$devbox_python" -c '
+import signal
+import sys
+import threading
+from pathlib import Path
+
+from devbox.browser_listener import BrowserForwardListener
+
+stop = threading.Event()
+for sig in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
+    signal.signal(sig, lambda *_: stop.set())
+
+with BrowserForwardListener(Path(sys.argv[1]), sys.argv[2]):
+    stop.wait()
+' "$1" "$2"
