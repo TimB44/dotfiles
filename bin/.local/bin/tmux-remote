@@ -6,21 +6,14 @@ unset TMUX
 
 control_socket="${TMPDIR:-/tmp}/devbox-agent-ssh-${USER}.sock"
 remote_agent_socket="/home/tblamires/.ssh/mac-agent.sock"
-browser_socket="/tmp/devbox-agent-ssh-${USER}-browser.sock"
 tunnel_pid=
-browser_listener_pid=
 
-stop_remote_connection() {
+stop_agent_tunnel() {
     if [ -n "$tunnel_pid" ]; then
         kill "$tunnel_pid" 2>/dev/null || true
         /usr/bin/ssh -S "$control_socket" -O exit devbox >/dev/null 2>&1 || true
         wait "$tunnel_pid" 2>/dev/null || true
         tunnel_pid=
-    fi
-    if [ -n "$browser_listener_pid" ]; then
-        kill "$browser_listener_pid" 2>/dev/null || true
-        wait "$browser_listener_pid" 2>/dev/null || true
-        browser_listener_pid=
     fi
 }
 
@@ -36,33 +29,12 @@ run_agent_tunnel() {
             -o ExitOnForwardFailure=yes \
             -o StreamLocalBindUnlink=yes \
             -R "${remote_agent_socket}:${SSH_AUTH_SOCK}" \
-            -R "${browser_socket}:${browser_socket}" \
-            -R "9222:localhost:9222" \
-            -o "SetEnv=DEVBOX_BROWSER_SOCKET=${browser_socket} BROWSER=devbox-browser-forwarder" \
             devbox
         sleep 1
     done
 }
 
-trap stop_remote_connection EXIT HUP INT TERM
-
-"$HOME/.local/bin/devbox-browser-listener" "$control_socket" devbox &
-browser_listener_pid=$!
-
-# Do not establish the reverse socket forward until the local listener is ready.
-attempt=0
-while [ ! -S "$browser_socket" ]; do
-    if ! kill -0 "$browser_listener_pid" 2>/dev/null; then
-        echo "Failed to start the Devbox browser listener"
-        exit 1
-    fi
-    attempt=$((attempt + 1))
-    if [ "$attempt" -ge 50 ]; then
-        echo "Timed out waiting for the Devbox browser listener"
-        exit 1
-    fi
-    sleep 0.1
-done
+trap stop_agent_tunnel EXIT HUP INT TERM
 
 run_agent_tunnel >/dev/null 2>&1 &
 tunnel_pid=$!
@@ -79,11 +51,11 @@ while ! /usr/bin/ssh -S "$control_socket" -O check devbox >/dev/null 2>&1; do
 done
 
 /opt/homebrew/bin/mosh \
-    --ssh="/usr/bin/ssh -S $control_socket -o ControlMaster=auto -o SetEnv=DEVBOX_BROWSER_SOCKET=$browser_socket -o SetEnv=BROWSER=devbox-browser-forwarder" \
+    --ssh="/usr/bin/ssh -S $control_socket -o ControlMaster=auto" \
     devbox \
     -- tmux new-session -A -s main
 
-stop_remote_connection
+stop_agent_tunnel
 
 # Returning from Mosh (for example, after detaching remote tmux) switches this
 # terminal back to the persistent local tmux session.
