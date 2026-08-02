@@ -4,6 +4,7 @@ brew "neovim"
 brew "node"
 brew "tmux"
 brew "mosh"
+brew "clipper", restart_service: true
 brew "git-delta"
 brew "fzf"
 brew "ripgrep"

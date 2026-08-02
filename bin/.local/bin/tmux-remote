@@ -6,7 +6,14 @@ unset TMUX
 
 control_socket="${TMPDIR:-/tmp}/devbox-agent-ssh-${USER}.sock"
 remote_agent_socket="/home/tblamires/.ssh/mac-agent.sock"
+local_clipper_socket="${HOME}/.clipper.sock"
+remote_clipper_socket="/home/tblamires/.clipper.sock"
 tunnel_pid=
+
+if [ ! -S "$local_clipper_socket" ]; then
+    echo "Clipper socket not found at $local_clipper_socket"
+    exit 1
+fi
 
 stop_agent_tunnel() {
     if [ -n "$tunnel_pid" ]; then
@@ -29,6 +36,7 @@ run_agent_tunnel() {
             -o ExitOnForwardFailure=yes \
             -o StreamLocalBindUnlink=yes \
             -R "${remote_agent_socket}:${SSH_AUTH_SOCK}" \
+            -R "${remote_clipper_socket}:${local_clipper_socket}" \
             devbox
         sleep 1
     done
