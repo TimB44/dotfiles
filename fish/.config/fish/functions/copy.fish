@@ -1,3 +1,3 @@
 function copy
-    fish_clipboard_copy
+    /usr/bin/nc -N -U "$HOME/.clipper.sock"
 end
